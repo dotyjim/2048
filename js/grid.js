@@ -128,3 +128,8 @@ Grid.prototype.serialize = function () {
     cells: cellState
   };
 };
+
+//TODO
+Grid.prototype.monotonicity = function() {
+  return 1;
+}

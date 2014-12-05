@@ -1,6 +1,7 @@
 function ArtificialIntelligence(gameManager) {
   this.gameManager = gameManager;
-  this.depth = 2;
+  this.depth = 3;
+  this.timeout = 600;
 }
 
 // Recursive function that returns optimal action and its utility.
@@ -44,7 +45,15 @@ ArtificialIntelligence.prototype.expectimax =  function(grid, depth, agentIndex)
 }
 
 ArtificialIntelligence.prototype.getNextMove = function(grid) {
-  var value_array = this.expectimax(grid, 2*this.depth, 0);
+  // Vary depth for animation purposes.
+  var depth = 2*this.depth - 1;
+  if (grid.numCellsAvailable() >= 9) {
+    depth = 4;
+  }
+  // Calculate time per call for testing purposes.
+  var start = (new Date()).getTime();
+  var value_array = this.expectimax(grid, depth, 0);
+  console.log(grid.numCellsAvailable() + '' + (new Date()).getTime() - start)
   var action = value_array[1];
   return action;
 }
@@ -70,13 +79,23 @@ ArtificialIntelligence.prototype.getNextGridOptions = function(grid) {
  */
 ArtificialIntelligence.prototype.getUtility = function(grid) {
   var total = 0;
+  var max = 0;
   grid.eachCell(function(x, y, tile) {
     if (tile) {
       total = total + tile.value;
+      if (tile.value > max) {
+        max = tile.value;
+      }
     }
   });
   var empty_tiles = grid.numCellsAvailable();
-  return total * empty_tiles;
+  return max * total * empty_tiles;
+}
+
+ArtificialIntelligence.prototype.run = function() {
+  var grid = this.gameManager.grid;
+  var move = this.getNextMove(grid);
+  this.gameManager.move(move);
 }
 
 /*
@@ -84,13 +103,9 @@ ArtificialIntelligence.prototype.getUtility = function(grid) {
  * current game state and calls GameManager.move().
  */
 ArtificialIntelligence.prototype.start = function() {
-  num = 0
-  while(!this.gameManager.over) {
-    var grid = this.gameManager.grid;
-    var move = this.getNextMove(grid);
-    this.gameManager.move(move);
-    //if (num == 2) 
-      //break;
-    num++;
-  }
+  var self = this;
+    setInterval(function(){
+      self.run();
+    }, self.timeout);
 }
+
