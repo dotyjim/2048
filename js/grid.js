@@ -68,6 +68,11 @@ Grid.prototype.cellsAvailable = function () {
   return !!this.availableCells().length;
 };
 
+// Return number of cells available
+Grid.prototype.numCellsAvailable = function() {
+  return this.availableCells().length;
+};
+
 // Check if the specified cell is taken
 Grid.prototype.cellAvailable = function (cell) {
   return !this.cellOccupied(cell);
