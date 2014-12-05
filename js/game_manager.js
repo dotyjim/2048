@@ -33,17 +33,17 @@ GameManager.prototype.isGameTerminated = function () {
 
 // Set up the game
 GameManager.prototype.setup = function () {
-  var previousState = this.storageManager.getGameState();
+  //var previousState = this.storageManager.getGameState();
 
   // Reload the game from a previous game if present
-  if (previousState) {
+  /*if (previousState) {
     this.grid        = new Grid(previousState.grid.size,
                                 previousState.grid.cells); // Reload grid
     this.score       = previousState.score;
     this.over        = previousState.over;
     this.won         = previousState.won;
     this.keepPlaying = previousState.keepPlaying;
-  } else {
+  } else {*/
     this.grid        = new Grid(this.size);
     this.score       = 0;
     this.over        = false;
@@ -52,7 +52,7 @@ GameManager.prototype.setup = function () {
 
     // Add the initial tiles
     this.addStartTiles();
-  }
+  //}
 
   // Update the actuator
   this.actuate();
@@ -120,15 +120,22 @@ GameManager.prototype.prepareTiles = function (grid) {
 };
 
 // Move a tile and its representation
-GameManager.prototype.moveTile = function (tile, cell) {
-  this.grid.cells[tile.x][tile.y] = null;
-  this.grid.cells[cell.x][cell.y] = tile;
+GameManager.prototype.moveTile = function (grid, tile, cell) {
+  grid.cells[tile.x][tile.y] = null;
+  grid.cells[cell.x][cell.y] = tile;
   tile.updatePosition(cell);
 };
 
-GameManager.protoype.updateGrid = function(grid, direction) {
+/*
+ * Returns the state of the grid after applying the action.
+ * Also returns a boolean which represents whether the board
+ * changed after applying the action.
+ */
+GameManager.prototype.updateGrid = function(grid, direction) {
+  var self = this;
+
   // 0: up, 1: right, 2: down, 3: left
-  if (!this.movesAvailable(grid)) return grid, false; // Don't do anything if the game's over
+  if (!this.movesAvailable(grid)) return [grid, false]; // Don't do anything if the game's over
 
   var next_grid = new Grid(grid.size, grid.cells);
   var cell, tile;
@@ -162,7 +169,7 @@ GameManager.protoype.updateGrid = function(grid, direction) {
           tile.updatePosition(positions.next);
 
         } else {
-          self.moveTile(tile, positions.farthest);
+          self.moveTile(next_grid, tile, positions.farthest);
         }
 
         if (!self.positionsEqual(cell, tile)) {
@@ -172,7 +179,7 @@ GameManager.protoype.updateGrid = function(grid, direction) {
     });
   });
 
-  return next_grid, moved;
+  return [next_grid, moved];
 }
 
 // Move tiles on the grid in the specified direction
@@ -218,7 +225,7 @@ GameManager.prototype.move = function (direction) {
           // The mighty 2048 tile
           //if (merged.value === 2048) self.won = true;
         } else {
-          self.moveTile(tile, positions.farthest);
+          self.moveTile(self.grid, tile, positions.farthest);
         }
 
         if (!self.positionsEqual(cell, tile)) {
