@@ -102,7 +102,7 @@ ArtificialIntelligence.prototype.getNextMove = function(grid) {
   // Calculate time per call for testing purposes.
   var num_cells_available = grid.numCellsAvailable();
   if (num_cells_available > 8) {
-    //depth = depth - 2;
+    depth = depth - 2;
   }
   var start = (new Date()).getTime();
 
