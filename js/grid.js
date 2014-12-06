@@ -129,7 +129,56 @@ Grid.prototype.serialize = function () {
   };
 };
 
-//TODO
 Grid.prototype.monotonicity = function() {
-  return 1;
+ var monoScores = [0, 0, 0, 0];
+
+  for (var i=0; i<4; i++) {
+    var current = 0;
+    var next = current+1;
+    while ( next<4 ) {
+      while ( next<4 && !this.cellOccupied({x: i, y: next})) {
+        next++;
+      }
+      if (next>=4) { next--; }
+      var currentValue = this.cellOccupied({x:i, y:current}) ?
+        Math.log(this.cellContent( this.cells[i][current] ).value) / Math.log(2) :
+        0;
+      var nextValue = this.cellOccupied({x:i, y:next}) ?
+        Math.log(this.cellContent( this.cells[i][next] ).value) / Math.log(2) :
+        0;
+      if (currentValue > nextValue) {
+        monoScores[0] += nextValue - currentValue;
+      } else if (nextValue > currentValue) {
+        monoScores[1] += currentValue - nextValue;
+      }
+      current = next;
+      next++;
+    }
+  }
+
+  for (var j=0; j<4; j++) {
+    var current = 0;
+    var next = current+1;
+    while ( next<4 ) {
+      while ( next<4 && !this.cellOccupied({x:next, y:j})) {
+        next++;
+      }
+      if (next>=4) { next--; }
+      var currentValue = this.cellOccupied({x:current, y:j}) ?
+        Math.log(this.cellContent( this.cells[current][j] ).value) / Math.log(2) :
+        0;
+      var nextValue = this.cellOccupied({x:next, y:j}) ?
+        Math.log(this.cellContent( this.cells[next][j] ).value) / Math.log(2) :
+        0;
+      if (currentValue > nextValue) {
+        monoScores[2] += nextValue - currentValue;
+      } else if (nextValue > currentValue) {
+        monoScores[3] += currentValue - nextValue;
+      }
+      current = next;
+      next++;
+    }
+  }
+
+  return Math.max(monoScores[0], monoScores[1]) + Math.max(monoScores[2], monoScores[3]); 
 }
