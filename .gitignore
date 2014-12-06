@@ -1,1 +1,4 @@
-.sass-cache/
+*.jpg
+*.jpeg
+*.png
+*.csv
