@@ -101,10 +101,10 @@ ArtificialIntelligence.prototype.getNextMove = function(grid) {
   var depth = 2*this.depth - 1;
   // Calculate time per call for testing purposes.
   var num_cells_available = grid.numCellsAvailable();
-  if (num_cells_available > 8) {
+  if (this.type == 'expectimax' && num_cells_available > 8) {
     depth = depth - 2;
   }
-  var start = (new Date()).getTime();
+  //var start = (new Date()).getTime();
 
   var value_array;
   if (this.type == 'expectimax') value_array = this.expectimax(grid, depth, 0);
@@ -112,10 +112,10 @@ ArtificialIntelligence.prototype.getNextMove = function(grid) {
   else if (this.type == 'random') value_array = this.random();
   else value_array = this.expectimax(grid, depth, 0);
 
-  var time = (new Date()).getTime() - start;
-  this.timeKeeper[num_cells_available] = (this.timeKeeper[num_cells_available] * this.countKeeper[num_cells_available] + time)/(this.countKeeper[num_cells_available] + 1);
-  this.countKeeper[num_cells_available]++;
-  console.log(this.timeKeeper);
+  //var time = (new Date()).getTime() - start;
+  //this.timeKeeper[num_cells_available] = (this.timeKeeper[num_cells_available] * this.countKeeper[num_cells_available] + time)/(this.countKeeper[num_cells_available] + 1);
+  //this.countKeeper[num_cells_available]++;
+  //console.log(this.timeKeeper);
   var action = value_array[1];
   return action;
 }
