@@ -129,6 +129,20 @@ Grid.prototype.serialize = function () {
   };
 };
 
+Grid.prototype.print = function() {
+  for (var x = 0; x < this.size; x++) {
+    var line = '';
+    for (var y = 0; y < this.size; y++) {
+       var tile = this.cells[x][y];
+       if (tile)
+         line += '  ' + tile.value;
+       else
+         line += '   0';
+    }
+    console.log(line);
+  }
+}
+
 Grid.prototype.monotonicity = function() {
  var monoScores = [0, 0, 0, 0];
 
