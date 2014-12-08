@@ -144,7 +144,7 @@ ArtificialIntelligence.prototype.getUtility = function(grid) {
   var max = 0;
   grid.eachCell(function(x, y, tile) {
     if (tile) {
-      total = total + tile.value;
+      total = total + Math.log(tile.value)/Math.log(2);
       if (tile.value > max) {
         max = tile.value;
       }
