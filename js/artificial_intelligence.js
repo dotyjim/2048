@@ -1,7 +1,7 @@
 function ArtificialIntelligence(gameManager, type) {
   this.gameManager = gameManager;
   this.depth = 3;
-  this.timeout = 650;
+  this.timeout = 750;
   this.type = type;
   this.timeKeeper = Array.apply(null, new Array(16)).map(Number.prototype.valueOf,0);
   this.countKeeper = Array.apply(null, new Array(16)).map(Number.prototype.valueOf,0);
@@ -151,8 +151,9 @@ ArtificialIntelligence.prototype.getUtility = function(grid) {
     }
   });
   var empty_tiles = grid.numCellsAvailable();
-  var monotonicity = 1;//grid.monotonicity()
-  return max * empty_tiles * monotonicity;
+  var monotonicity = grid.monotonicity()
+  //return max * empty_tiles + monotonicity;
+  return grid.gradient();
 }
 
 ArtificialIntelligence.prototype.run = function() {

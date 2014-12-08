@@ -196,3 +196,34 @@ Grid.prototype.monotonicity = function() {
 
   return Math.max(monoScores[0], monoScores[1]) + Math.max(monoScores[2], monoScores[3]); 
 }
+
+Grid.prototype.gradient = function() {
+  var gradients = [
+    [[ 3,  2,  1,  0],
+     [ 2,  1,  0, -1],
+     [ 1,  0, -1, -2],
+     [ 0, -1, -2, -3]],
+    [[ 0,  1,  2,  3],
+     [-1,  0,  1,  2],
+     [-2, -1,  0,  1],
+     [-3, -2, -1, -0]],
+    [[ 0, -1, -2, -3],
+     [ 1,  0, -1, -2],
+     [ 2,  1,  0, -1],
+     [ 0, -1, -2, -3]],
+    [[-3, -2, -1,  0],
+     [-2, -1,  0,  1],
+     [-1,  0,  1,  2],
+     [ 0,  1,  2,  3]]
+    ];
+
+  var values = [0, 0, 0, 0];
+
+  for (var i = 0; i < 4; i++) {
+    this.eachCell(function(x, y, tile) {
+      if (tile)
+        values[i] += gradients[i][x][y] * tile.value;
+    });
+  }
+  return Math.max.apply(Math, values);
+}
