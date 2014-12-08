@@ -14,6 +14,8 @@ var win = 0;
 var lose = 0;
 var scores = []
 var numPlays = 100;
+var total = 0;
+var count = 0;
 
 for (var i = 0; i < numPlays; i++) {
   var gameManager = new GameManager(4, null, null, null);
@@ -22,12 +24,14 @@ for (var i = 0; i < numPlays; i++) {
     artificialIntelligence.run();
   }
   scores.push(gameManager.score);
-  console.log('score:' + gameManager.score);
+  total += gameManager.score;
+  count += 1;
   if (gameManager.won) {
     win += 1;
   } else {
     lose += 1;
   }
+  console.log('score:' + gameManager.score + ', wins: ' + win + ', loses: ' + lose + ', avg: ' + (total/count));
 }
 
 var avg = 0;
