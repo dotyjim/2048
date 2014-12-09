@@ -1,7 +1,7 @@
 function ArtificialIntelligence(gameManager, type) {
   this.gameManager = gameManager;
   this.depth = 3;
-  this.timeout = 750;
+  this.timeout = 450;
   this.type = type;
   this.timeKeeper = Array.apply(null, new Array(16)).map(Number.prototype.valueOf,0);
   this.countKeeper = Array.apply(null, new Array(16)).map(Number.prototype.valueOf,0);
@@ -101,8 +101,8 @@ ArtificialIntelligence.prototype.getNextMove = function(grid) {
   var depth = 2*this.depth - 1;
   // Calculate time per call for testing purposes.
   var num_cells_available = grid.numCellsAvailable();
-  if (this.type == 'expectimax' && num_cells_available > 8) {
-    depth = depth - 2;
+  if (this.type == 'expectimax' && num_cells_available > 5) {
+    depth = depth - 1;
   }
   //var start = (new Date()).getTime();
 
